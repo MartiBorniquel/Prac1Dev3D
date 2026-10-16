@@ -193,4 +193,15 @@ public class FPSController : MonoBehaviour
         m_Animation.CrossFade(m_ReloadAnimationClip.name, 0.1f);
         m_Animation.CrossFadeQueued(m_IdleAnimationClip.name, 0.3f);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            Item l_Item= other.GetComponent<Item>();
+            if (l_Item.CanPick())
+            {
+                l_Item.CanPick();
+            }
+        }
+    }
 }
