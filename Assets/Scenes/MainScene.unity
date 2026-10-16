@@ -990,7 +990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7234866696960222313, guid: 110623a871ec026459e4aad1d8d2e2dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.8097763
+      value: -0.86994934
       objectReference: {fileID: 0}
     - target: {fileID: 7234866696960222313, guid: 110623a871ec026459e4aad1d8d2e2dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1037,6 +1037,7 @@ Animation:
   - {fileID: 7400000, guid: 6057dd7d5c77a5143838891f5d10e0dc, type: 2}
   - {fileID: 7400000, guid: 3fff01faab52a4342b4a7c29f416f351, type: 2}
   - {fileID: 7400000, guid: b9ce305b18fe1734e867e2912a3104b0, type: 2}
+  - {fileID: 7400000, guid: fa4ec1e79c7ce5348923d3d00899d5d5, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
