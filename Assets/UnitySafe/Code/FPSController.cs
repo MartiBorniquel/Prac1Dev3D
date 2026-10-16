@@ -1,5 +1,6 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 public class FPSController : MonoBehaviour
 {
     public Transform m_PitchController;
@@ -40,6 +41,7 @@ public class FPSController : MonoBehaviour
     public AnimationClip m_IdleAnimationClip;
     public AnimationClip m_ShootAnimationClip;
     public AnimationClip m_ReloadAnimationClip;
+
 
     int m_ShootButton = 0;
 
@@ -166,9 +168,16 @@ public class FPSController : MonoBehaviour
 
     void CreateShootHitParticles(Vector3 position, Vector3 normal)
     {
-        GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
-        l_GameObject.transform.position = position;
-        l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
+        //GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
+        //l_GameObject.transform.position = position;
+        //l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
+        GameObject bullet = ObjectPooling.SharedInstance.GetPooledObject();
+        if (bullet != null)
+        {
+            bullet.transform.position = position;
+            bullet.transform.rotation = Quaternion.LookRotation(normal);
+            bullet.SetActive(true);
+        }
     }
     void SetIdleWeaponAnim()
     {
@@ -183,5 +192,16 @@ public class FPSController : MonoBehaviour
     {
         m_Animation.CrossFade(m_ReloadAnimationClip.name, 0.1f);
         m_Animation.CrossFadeQueued(m_IdleAnimationClip.name, 0.3f);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            Item l_Item= other.GetComponent<Item>();
+            if (l_Item.CanPick())
+            {
+                l_Item.CanPick();
+            }
+        }
     }
 }
