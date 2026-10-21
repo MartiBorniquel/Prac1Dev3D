@@ -6,17 +6,17 @@ public class GameController : MonoBehaviour
     public Transform m_DestroyObjects;
     public static GameController m_GameController=null;
     public KeyCode m_RestartKeyCode = KeyCode.R;
+    FPSController m_Player;
 
-    private void Start()
+    private void Awake()
     {
-        if (m_GameController == null)
+        if(m_GameController  == null)
         {
-            m_GameController = this;
+            m_GameController=this;
             DontDestroyOnLoad(gameObject);
-            
         }
-        else
-              GameObject.Destroy(gameObject);
+        else 
+            GameObject.Destroy(gameObject);   
     }
     static public GameController GetGameController() 
     {
@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < m_DestroyObjects.childCount; ++i)
             GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);
+        m_Player.Restart();
     }
     private void Update()
     {

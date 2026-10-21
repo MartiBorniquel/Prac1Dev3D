@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class AmmoItem : MonoBehaviour
+public class AmmoItem : Item
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public int m_AmmoCount = 20;
+    public override bool CanPick()
     {
-        
+        return true;
+    }
+    public override void Pick()
+    {
+        base.Pick();
+        Debug.Log("Picked Ammo item");
     }
 }

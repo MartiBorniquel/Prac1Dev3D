@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -42,8 +43,12 @@ public class FPSController : MonoBehaviour
     public AnimationClip m_ShootAnimationClip;
     public AnimationClip m_ReloadAnimationClip;
 
+    Vector3 m_StartPosition;
+    Quaternion m_StartRotation;
 
     int m_ShootButton = 0;
+
+    public int m_Score = 0;
 
     private void Awake()
     {
@@ -54,6 +59,9 @@ public class FPSController : MonoBehaviour
         SetIdleWeaponAnim();
         m_Yaw = transform.rotation.eulerAngles.y;
         m_Pitch = m_PitchController.eulerAngles.x;
+        m_StartPosition = transform.position;
+        m_StartRotation = transform.rotation;
+
     }
 
     private void Update()
@@ -197,11 +205,25 @@ public class FPSController : MonoBehaviour
     {
         if (other.CompareTag("Item"))
         {
-            Item l_Item= other.GetComponent<Item>();
+            Item l_Item = other.GetComponent<Item>();
             if (l_Item.CanPick())
             {
                 l_Item.CanPick();
             }
         }
+        else if (other.CompareTag("DeadZone")) { Kill(); }
+    }
+    IEnumerator Kill()
+    {
+        yield return  new WaitForSeconds(1.5f);
+        GameController.GetGameController().Restart();
+
+    }
+    public void Restart()
+    {
+        m_CharacterController.enabled = false;
+        transform.position = m_StartPosition;
+        transform.rotation = m_StartRotation;
+        m_CharacterController.enabled = true;
     }
 }
