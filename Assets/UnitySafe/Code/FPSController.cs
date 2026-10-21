@@ -45,6 +45,8 @@ public class FPSController : MonoBehaviour
 
     int m_ShootButton = 0;
 
+    public int m_Score = 0;
+
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
