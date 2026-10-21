@@ -1,52 +1,54 @@
-using System.Net.NetworkInformation;
-using UnityEditorInternal;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class DroneEnemy : MonoBehaviour
 {
     enum TState
     {
-        IDLE,
-        ALERT,
+        IDLE = 0,
         PATROL,
-        ATTACK,
+        ALERT,
         CHASE,
+        ATTACK,
         HIT,
-        DIE,
+        DIE
     }
 
+    NavMeshAgent m_NavMeshAgent;
     TState m_CurrentState = TState.IDLE;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public List<Transform> m_Waypoints;
+    int m_CurrentPatrolId;
+    public float m_ChaseDistance = 5;
+
+    private void Awake()
+    {
+        m_NavMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
     {
         SetIdleState();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         switch (m_CurrentState)
         {
             case TState.IDLE:
-                UpdateIdleState();
-                break;
-            case TState.ALERT:
-                UpdateAlertState();
                 break;
             case TState.PATROL:
-                UpdatePatrolState();
                 break;
-            case TState.ATTACK:
-                UpdateAttackState();
+            case TState.ALERT:
                 break;
             case TState.CHASE:
-                UpdateChaseState();
+                break;
+            case TState.ATTACK:
                 break;
             case TState.HIT:
-                UpdateHitState();
                 break;
             case TState.DIE:
-                UpdateDieState();
                 break;
         }
     }
@@ -61,34 +63,35 @@ public class DroneEnemy : MonoBehaviour
         m_CurrentPatrolId = GetClosestPatrolWaypoint();
         m_NavMeshAgent.destination = m_Waypoints[m_CurrentPatrolId].position;
     }
-    void MoveToNextWaypoint()
-    {
-        ++m_currentPatrolId;
-        if (m_CurrentPatrolId == m_Waypoints.Count)
-            m_CurrentPatrolId = 0;
-        m_CurrentPatrolId=(m_CurrentPatrolId+1)
-    }
+
     int GetClosestPatrolWaypoint()
     {
         int l_WaypointId = 0;
-        for (int i = 0; i < l_WaypointId; i++) { float l_Distance = Vector3(transform.position, m_Waypoints[i].position).sqrMagnitude;
-            if (i == 0 || l_Distance<MaxDistance) { l_MaxDistance = l_Distance l_WaypointId = i;)}
-
-    void SetChaseState()
-    {
-        m_CurrentState = TState.CHASE;
+        float l_ClosestDistance = float.MaxValue /* 0.0f*/;
+        for (int i = 0; i < m_Waypoints.Count; ++i)
+        {
+            float l_Distance = Vector3.Distance(transform.position, m_Waypoints[i].position);
+            if (/* i == 0 || */ l_Distance < l_ClosestDistance)
+            {
+                l_ClosestDistance = l_Distance;
+                l_WaypointId = i;
+            }
+        }
+        return l_WaypointId;
     }
 
     void SetAlertState()
     {
         m_CurrentState = TState.ALERT;
     }
-
+    void SetChaseState()
+    {
+        m_CurrentState = TState.CHASE;
+    }
     void SetAttackState()
     {
         m_CurrentState = TState.ATTACK;
     }
-
     void SetHitState()
     {
         m_CurrentState = TState.HIT;
@@ -100,42 +103,29 @@ public class DroneEnemy : MonoBehaviour
 
     void UpdateIdleState()
     {
-
+        SetPatrolState();
     }
 
     void UpdatePatrolState()
     {
-
+        if (HasArrivedToWaypoint())
+            MoveToNextPatrolPosition();
     }
-
-    void UpdatepatrolState()
+    bool HasArrivedToWaypoint()
     {
-
+        return !m_NavMeshAgent.pathPending && m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance;
+        // return !m_NavNeshAgent.hasPath 
     }
-
-    void UpdateChaseState()
+    void MoveToNextPatrolPosition()
     {
-
+        m_CurrentPatrolId = (m_CurrentPatrolId + 1) % m_Waypoints.Count;
+        m_NavMeshAgent.destination = m_Waypoints[m_CurrentPatrolId].position;
     }
 
-    void UpdateAlertState()
+    void SetNextChasePosition()
     {
-
+        Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
+        Vector3 l_Direction = (l_PlayerPosition - transform.position).normalized;
+        m_NavMeshAgent.destination = transform.position + l_Direction * m_ChaseDistance;
     }
-
-    void UpdateAttackState()
-    {
-
-    }
-
-    void UpdateHitState()
-    {
-
-    }
-
-    void UpdateDieState()
-    {
-
-    }
-
 }

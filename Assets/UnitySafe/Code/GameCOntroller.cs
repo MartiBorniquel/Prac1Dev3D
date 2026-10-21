@@ -32,4 +32,12 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetKeyDown(m_RestartKeyCode)) Restart();
     }
+    public FPSController GetPlayer()
+    {
+        return m_Player;
+    }
+    public void SetPlayer(FPSController Player)
+    {
+        m_Player= Player;
+    }
 }

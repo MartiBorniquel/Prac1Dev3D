@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
@@ -61,7 +62,7 @@ public class FPSController : MonoBehaviour
         m_Pitch = m_PitchController.eulerAngles.x;
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
-
+        GameController.GetGameController().SetPlayer(this);
     }
 
     private void Update()
