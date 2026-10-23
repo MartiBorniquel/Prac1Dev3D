@@ -55,6 +55,8 @@ public class FPSController : MonoBehaviour
     bool reloading=false;
     public int m_DelayReload;
     public int m_InventoryBullets=90;
+
+
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
@@ -148,6 +150,7 @@ public class FPSController : MonoBehaviour
         else if (!CanShoot() && MustShoot()&&!reloading) StartCoroutine(Reload());
         if (CanReload() && MustReload()&&!reloading)
             StartCoroutine(Reload());
+        UpdateLifeBarEnemy();
     }
 
 
@@ -267,9 +270,24 @@ public class FPSController : MonoBehaviour
         transform.rotation = m_StartRotation;
         m_CharacterController.enabled = true;
     }
+     void UpdateLifeBarEnemy()
+    {
+        GameController l_GameController = GameController.GetGameController();
+        List<DroneEnemy> l_Enemies = l_GameController.GetEnemies();
 
-    void UpdateLifeBarEnemies()
-    { 
-    
+        LifeBarElementUI l_LifebarElementUI = l_GameController.GetIngameUI().m_lifeBarElementUI;
+        l_LifebarElementUI.Hide();
+
+        foreach(DroneEnemy l_Enemy in l_Enemies)
+        {
+            Vector3 l_ViewPoint = m_Camera.WorldToViewportPoint(l_Enemy.transform.position);
+            bool l_EnemyInvisible = l_ViewPoint.z >= 0 && l_ViewPoint.x <= 1.0f && l_ViewPoint.y >= 0 && l_ViewPoint.y <= 1.0f;
+            if (l_EnemyInvisible)
+            {
+                Vector2 l_Position = new Vector2(l_ViewPoint.x + 1920.0f, l_ViewPoint.y + 1080.0f);
+                l_LifebarElementUI.Show(l_Position, l_Enemy.GetLife() / (float)l_Enemy.m_MaxHealth);
+                break;
+            }
+        }
     }
 }

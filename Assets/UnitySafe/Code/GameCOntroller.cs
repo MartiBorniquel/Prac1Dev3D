@@ -1,5 +1,7 @@
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
@@ -7,8 +9,9 @@ public class GameController : MonoBehaviour
     public static GameController m_GameController=null;
     public KeyCode m_RestartKeyCode = KeyCode.R;
     FPSController m_Player;
-    InGameUI _InGameUI;
-    public List<DroneEnemy> = EnemyList;
+    InGameUI m_IngameUI;
+    List<DroneEnemy> m_EnemyList = new List<DroneEnemy>();
+    DroneEnemy m_Enemies;
 
 
     private void Awake()
@@ -25,11 +28,23 @@ public class GameController : MonoBehaviour
     {
         return m_GameController;
     }
-
-    public void SetIngameUI(InGameUI _InGameUI)
+    public void SetIngameUI(InGameUI _IngameUI)
     {
-
+        m_IngameUI = _IngameUI;
     }
+    public InGameUI GetIngameUI()
+    {
+        return m_IngameUI;
+    }
+    public void AddEnemy(DroneEnemy Enemy)
+    {
+        m_EnemyList.Add(Enemy);
+    }
+    public List<DroneEnemy> GetEnemies()
+    {
+        return m_EnemyList;
+    }
+    
     public void Restart()
     {
         for (int i = 0; i < m_DestroyObjects.childCount; ++i)
@@ -47,10 +62,5 @@ public class GameController : MonoBehaviour
     public void SetPlayer(FPSController Player)
     {
         m_Player= Player;
-    }
-
-    public void AddEnemy(DroneEnemy enemy)
-    {
-
     }
 }

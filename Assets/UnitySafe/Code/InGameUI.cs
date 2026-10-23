@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class InGameUI : MonoBehaviour
 {
-    public LifeBarElementUI m_LifeBarElementUI;
-
+    public LifeBarElementUI m_lifeBarElementUI;
     private void Start()
     {
-        GameController.GetGameController
+        GameController.GetGameController().SetIngameUI(this);
     }
 }
