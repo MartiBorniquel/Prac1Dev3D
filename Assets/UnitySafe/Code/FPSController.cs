@@ -55,6 +55,7 @@ public class FPSController : MonoBehaviour
     bool reloading=false;
     public int m_DelayReload;
     public int m_InventoryBullets=90;
+    public CPoolElements m_HitParticlesPool;
 
 
     private void Awake()
@@ -70,6 +71,7 @@ public class FPSController : MonoBehaviour
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
         m_CurrentBullets = m_MaxBullets;
+        //m_HitParticlesPool = new CPoolElements(10, m_HitParticlePrefab); lo dejo asi pk ya hice mi pool de objetos
     }
 
     private void Update()
@@ -223,6 +225,9 @@ public class FPSController : MonoBehaviour
         //GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
         //l_GameObject.transform.position = position;
         //l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
+        
+        //GameObject l_GameObject = m_HitParticlesPool.GetNextElement();
+        //l_GameObject.SetActive(true)
         GameObject bullet = ObjectPooling.SharedInstance.GetPooledObject();
         if (bullet != null)
         {
