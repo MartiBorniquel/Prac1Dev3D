@@ -267,4 +267,9 @@ public class FPSController : MonoBehaviour
         transform.rotation = m_StartRotation;
         m_CharacterController.enabled = true;
     }
+
+    void UpdateLifeBarEnemies()
+    { 
+    
+    }
 }

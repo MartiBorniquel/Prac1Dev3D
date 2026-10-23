@@ -7,6 +7,9 @@ public class GameController : MonoBehaviour
     public static GameController m_GameController=null;
     public KeyCode m_RestartKeyCode = KeyCode.R;
     FPSController m_Player;
+    InGameUI _InGameUI;
+    public List<DroneEnemy> = EnemyList;
+
 
     private void Awake()
     {
@@ -21,6 +24,11 @@ public class GameController : MonoBehaviour
     static public GameController GetGameController() 
     {
         return m_GameController;
+    }
+
+    public void SetIngameUI(InGameUI _InGameUI)
+    {
+
     }
     public void Restart()
     {
@@ -39,5 +47,10 @@ public class GameController : MonoBehaviour
     public void SetPlayer(FPSController Player)
     {
         m_Player= Player;
+    }
+
+    public void AddEnemy(DroneEnemy enemy)
+    {
+
     }
 }
