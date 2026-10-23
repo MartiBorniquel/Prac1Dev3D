@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - HitCollider
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Physics
   - Water
   - UI
   - Player

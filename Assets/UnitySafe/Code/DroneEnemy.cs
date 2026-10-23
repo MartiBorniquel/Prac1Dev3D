@@ -26,6 +26,7 @@ public class DroneEnemy : MonoBehaviour
     public int m_BodyHit = 20;
     public int m_HeadHit = 50;
     public int m_WingsHit = 10;
+    public Transform m_LifeBarPosition;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class DroneEnemy : MonoBehaviour
     {
         SetIdleState();
         m_Health = m_MaxHealth;
+        GameController.GetGameController().AddEnemy(this);
     }
 
     private void Update()
@@ -57,11 +59,16 @@ public class DroneEnemy : MonoBehaviour
             case TState.DIE:
                 break;
         }
+        
     }
 
     void SetIdleState()
     {
         m_CurrentState = TState.IDLE;
+    }
+    public void GetHealth()
+    {
+
     }
     void SetPatrolState()
     {
@@ -154,7 +161,7 @@ public class DroneEnemy : MonoBehaviour
                 
          
         }
-        m_Health-= l_LifePoints;
+        m_Health+= l_LifePoints;
         if (m_Health <= 0)
         {
             SetDieState();
@@ -163,5 +170,9 @@ public class DroneEnemy : MonoBehaviour
         else
             SetHitState();
         Debug.Log("Current health" + m_Health);
+    }
+    public int GetLife()
+    {
+        return m_Health;
     }
 }
