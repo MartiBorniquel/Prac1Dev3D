@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     InGameUI m_IngameUI;
     List<DroneEnemy> m_EnemyList = new List<DroneEnemy>();
     DroneEnemy m_Enemies;
+    Fade m_Fade;
 
 
     private void Awake()
