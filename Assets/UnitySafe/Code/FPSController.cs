@@ -197,9 +197,21 @@ public class FPSController : MonoBehaviour
         Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
 
         if (Physics.Raycast(l_Ray, out RaycastHit l_RaycastHit, m_MaxShootDistance, m_ShootLayerMask.value))
-            CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);
-        SetShootWeaponAnim();
-        Debug.Log("Current bullets:" + m_CurrentBullets);
+        {
+            if (l_RaycastHit.collider.CompareTag("HitCollider"))
+            {
+                l_RaycastHit.collider.GetComponent<HitCollider>().Hit();
+            }
+            else
+            { CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);}
+                
+
+
+
+                
+            SetShootWeaponAnim();
+            Debug.Log("Current bullets:" + m_CurrentBullets);
+        }
 
     }
 

@@ -148,7 +148,20 @@ public class DroneEnemy : MonoBehaviour
             case HitCollider.HitColliderType.WINGS:
                 l_LifePoints -= m_WingsHit;
                 break;
+            default:
+                Debug.Log("HitCollider not registered");
+                break;
+                
          
         }
+        m_Health-= l_LifePoints;
+        if (m_Health <= 0)
+        {
+            SetDieState();
+
+        }
+        else
+            SetHitState();
+        Debug.Log("Current health" + m_Health);
     }
 }

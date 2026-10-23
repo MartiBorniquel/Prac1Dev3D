@@ -9,4 +9,11 @@ public class HitCollider : MonoBehaviour
         WINGS
 
     }
+    public HitColliderType m_Type;
+    public DroneEnemy m_DroneEnemy;
+
+    public void Hit()
+    {
+        m_DroneEnemy.Hit(m_Type);
+    }
 }
