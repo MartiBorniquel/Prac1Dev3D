@@ -12,7 +12,10 @@ public class GameController : MonoBehaviour
     InGameUI m_IngameUI;
     List<DroneEnemy> m_EnemyList = new List<DroneEnemy>();
     DroneEnemy m_Enemies;
+    Fade m_fade;
 
+    public void SetFade(Fade _Fade) { m_fade = _Fade; }
+    public Fade GetFade() { return m_fade; }
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < m_DestroyObjects.childCount; ++i)
             GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);
         m_Player.Restart();
+        StartCoroutine(m_fade.FadeOut());
     }
     private void Update()
     {

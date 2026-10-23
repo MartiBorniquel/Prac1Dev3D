@@ -264,6 +264,11 @@ public class FPSController : MonoBehaviour
     }
     IEnumerator Kill()
     {
+        StartCoroutine(GameController.GetGameController().GetFade().FadeIn(() =>
+            {
+                GameController.GetGameController().GetFade().gameObject.SetActive(false);
+                GameController.GetGameController().Restart();
+            }));
         yield return  new WaitForSeconds(1.5f);
         GameController.GetGameController().Restart();
 
