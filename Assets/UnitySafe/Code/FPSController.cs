@@ -50,7 +50,11 @@ public class FPSController : MonoBehaviour
     int m_ShootButton = 0;
 
     public int m_Score = 0;
-
+    public int m_MaxBullets = 30;
+    public int m_CurrentBullets;
+    bool reloading=false;
+    public int m_DelayReload;
+    public int m_InventoryBullets=90;
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
@@ -63,6 +67,7 @@ public class FPSController : MonoBehaviour
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
+        m_CurrentBullets = m_MaxBullets;
     }
 
     private void Update()
@@ -138,15 +143,17 @@ public class FPSController : MonoBehaviour
         else if ((l_CollisionFlags & CollisionFlags.CollidedBelow) != 0 && m_VerticalSpeed > 0.0f)
             m_VerticalSpeed = 0.0f;
 
-        if (CanShoot() && MustShoot())
+        if (CanShoot() && MustShoot() && !reloading)
             Shoot();
-        if (CanReload() && MustReload())
-            Reload();
+        else if (!CanShoot() && MustShoot()&&!reloading) StartCoroutine(Reload());
+        if (CanReload() && MustReload()&&!reloading)
+            StartCoroutine(Reload());
     }
 
 
     bool CanShoot()
     {
+        if(m_CurrentBullets<=0) { return false; }
         return true;
     }
 
@@ -154,9 +161,25 @@ public class FPSController : MonoBehaviour
     {
         return Input.GetMouseButtonDown(m_ShootButton);
     }
-    void Reload()
+    IEnumerator Reload()
     {
+        reloading = true; 
         SetReloadWeaponAnim();
+        yield return new WaitForSeconds(m_DelayReload);
+        if (m_CurrentBullets <= 0)
+        {
+            m_InventoryBullets -= m_MaxBullets;
+        }
+        else
+        {
+               m_InventoryBullets -= (m_MaxBullets - m_CurrentBullets);
+        }
+        m_CurrentBullets = m_MaxBullets;
+        Debug.Log("Inventory bullets" + m_InventoryBullets);
+
+
+        reloading = false;
+        Debug.Log("Reloaded: bullets " + m_CurrentBullets);
     }
     bool MustReload()
     {
@@ -164,15 +187,20 @@ public class FPSController : MonoBehaviour
     }
     bool CanReload()
     {
-        return true;
+        if (m_InventoryBullets <= 0) { Debug.Log("Insufficient ammo" + m_InventoryBullets); return false; }
+
+        else { return true; }
     }
     void Shoot()
     {
+        m_CurrentBullets -= 1;
         Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
 
         if (Physics.Raycast(l_Ray, out RaycastHit l_RaycastHit, m_MaxShootDistance, m_ShootLayerMask.value))
             CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);
         SetShootWeaponAnim();
+        Debug.Log("Current bullets:" + m_CurrentBullets);
+
     }
 
     void CreateShootHitParticles(Vector3 position, Vector3 normal)
