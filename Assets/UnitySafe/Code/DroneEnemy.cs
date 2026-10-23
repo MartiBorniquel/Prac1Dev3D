@@ -21,6 +21,11 @@ public class DroneEnemy : MonoBehaviour
     public List<Transform> m_Waypoints;
     int m_CurrentPatrolId;
     public float m_ChaseDistance = 5;
+    public int m_MaxHealth = 50;
+    public int m_Health;
+    public int m_BodyHit = 20;
+    public int m_HeadHit = 50;
+    public int m_WingsHit = 10;
 
     private void Awake()
     {
@@ -30,6 +35,7 @@ public class DroneEnemy : MonoBehaviour
     private void Start()
     {
         SetIdleState();
+        m_Health = m_MaxHealth;
     }
 
     private void Update()
@@ -127,5 +133,22 @@ public class DroneEnemy : MonoBehaviour
         Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
         Vector3 l_Direction = (l_PlayerPosition - transform.position).normalized;
         m_NavMeshAgent.destination = transform.position + l_Direction * m_ChaseDistance;
+    }
+    public void Hit(HitCollider.HitColliderType HitColliderType )
+    {
+        int l_LifePoints = 0;
+        switch (HitColliderType)
+        {
+            case HitCollider.HitColliderType.BODY:
+                l_LifePoints -= m_BodyHit;
+                break;
+            case HitCollider.HitColliderType.HEAD:
+                l_LifePoints -= m_HeadHit;
+                break;
+            case HitCollider.HitColliderType.WINGS:
+                l_LifePoints -= m_WingsHit;
+                break;
+         
+        }
     }
 }
