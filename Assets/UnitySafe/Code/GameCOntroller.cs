@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     public Transform m_DestroyObjects;
     public static GameController m_GameController=null;
-    public KeyCode m_RestartKeyCode = KeyCode.R;
+    public KeyCode m_RestartKeyCode = KeyCode.Q;
     FPSController m_Player;
     InGameUI m_IngameUI;
     List<DroneEnemy> m_EnemyList = new List<DroneEnemy>();
