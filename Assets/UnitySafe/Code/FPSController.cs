@@ -57,10 +57,12 @@ public class FPSController : MonoBehaviour
     public int m_InventoryBullets=90;
     public CPoolElements m_HitParticlesPool;
 
+    Score score; 
 
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
+        score = FindObjectOfType<Score>();
     }
     private void Start()
     {
@@ -71,6 +73,7 @@ public class FPSController : MonoBehaviour
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
         m_CurrentBullets = m_MaxBullets;
+        
         //m_HitParticlesPool = new CPoolElements(10, m_HitParticlePrefab); lo dejo asi pk ya hice mi pool de objetos
     }
 
@@ -196,6 +199,7 @@ public class FPSController : MonoBehaviour
 
         else { return true; }
     }
+
     void Shoot()
     {
         m_CurrentBullets -= 1;
@@ -203,22 +207,28 @@ public class FPSController : MonoBehaviour
 
         if (Physics.Raycast(l_Ray, out RaycastHit l_RaycastHit, m_MaxShootDistance, m_ShootLayerMask.value))
         {
-            if (l_RaycastHit.collider.CompareTag("HitCollider"))
+            ShootingTarget l_Target = l_RaycastHit.collider.GetComponentInParent<ShootingTarget>();
+
+            if (l_Target != null && l_Target.HitTarget())
+            {
+                m_Score += l_Target.pointsPerHit;
+                score.SumScore(l_Target.pointsPerHit);
+                Debug.Log("Score: " + m_Score);
+            }
+            else if (l_RaycastHit.collider.CompareTag("HitCollider"))
             {
                 l_RaycastHit.collider.GetComponent<HitCollider>().Hit();
             }
             else
-            { CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);}
-                
+            {
+                CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);
+            }
 
-
-
-                
             SetShootWeaponAnim();
             Debug.Log("Current bullets:" + m_CurrentBullets);
         }
-
     }
+
 
     void CreateShootHitParticles(Vector3 position, Vector3 normal)
     {
