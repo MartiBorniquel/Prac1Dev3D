@@ -7,7 +7,7 @@ public class DoorTrigger : MonoBehaviour
     public bool locked = false;
 
     public bool lockedByScore = false;
-    public int requiredScore = 100;
+    public int requiredScore = 50;
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
