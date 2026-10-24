@@ -8,12 +8,12 @@ public class DroneEnemy : MonoBehaviour
     enum TState
     {
         IDLE = 0,
-        PATROL,
-        ALERT,
-        CHASE,
-        ATTACK,
-        HIT,
-        DIE
+        PATROL = 1,
+        ALERT = 2,
+        CHASE = 3,
+        ATTACK = 4,
+        HIT = 5,
+        DIE = 6
     }
 
     NavMeshAgent m_NavMeshAgent;
@@ -42,23 +42,32 @@ public class DroneEnemy : MonoBehaviour
 
     private void Update()
     {
+
         switch (m_CurrentState)
         {
             case TState.IDLE:
+                UpdateIdleState();
                 break;
             case TState.PATROL:
+                UpdatePatrolState();
                 break;
             case TState.ALERT:
+                //UpdateAlertState();
                 break;
             case TState.CHASE:
+                UpdateChaseState();
                 break;
             case TState.ATTACK:
+                UpdateAttackState();
                 break;
             case TState.HIT:
+                UpdateHitState();
                 break;
             case TState.DIE:
+                UpdateDieState();
                 break;
         }
+
         
     }
 
@@ -124,6 +133,27 @@ public class DroneEnemy : MonoBehaviour
         if (HasArrivedToWaypoint())
             MoveToNextPatrolPosition();
     }
+
+    void UpdateChaseState()
+    {
+        SetNextChasePosition();
+    }
+
+    void UpdateAttackState()
+    {
+        // Attack logic here
+    }
+
+    void UpdateHitState()
+    {
+        // Hit logic here
+    }
+
+    void UpdateDieState()
+    {
+        // Die logic here
+    }
+
     bool HasArrivedToWaypoint()
     {
         return !m_NavMeshAgent.pathPending && m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance;
