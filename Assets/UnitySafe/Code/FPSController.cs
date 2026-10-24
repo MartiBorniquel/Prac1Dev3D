@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
@@ -23,13 +22,11 @@ public class FPSController : MonoBehaviour
     public float m_SprintSpeed = 0;
     bool angleLocked = false;
     bool cursorLocked = false;
-
     [Header("Shoot")]
     public Camera m_Camera;
     public float m_MaxShootDistance = 200.0f;
     public LayerMask m_ShootLayerMask;
     public GameObject m_HitParticlePrefab;
-    public CPoolElementss m_HitParticlesPool;
 
     [Header("Input")]
     public KeyCode m_LeftKeyCode = KeyCode.A;
@@ -58,6 +55,7 @@ public class FPSController : MonoBehaviour
     bool reloading=false;
     public int m_DelayReload;
     public int m_InventoryBullets=90;
+    public CPoolElements m_HitParticlesPool;
 
 
     private void Awake()
@@ -73,7 +71,7 @@ public class FPSController : MonoBehaviour
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
         m_CurrentBullets = m_MaxBullets;
-        m_HitParticlesPool = new CPoolElementss(10, m_HitParticlePrefab);
+        //m_HitParticlesPool = new CPoolElements(10, m_HitParticlePrefab); lo dejo asi pk ya hice mi pool de objetos
     }
 
     private void Update()
@@ -227,6 +225,9 @@ public class FPSController : MonoBehaviour
         //GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
         //l_GameObject.transform.position = position;
         //l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
+        
+        //GameObject l_GameObject = m_HitParticlesPool.GetNextElement();
+        //l_GameObject.SetActive(true)
         GameObject bullet = ObjectPooling.SharedInstance.GetPooledObject();
         if (bullet != null)
         {
@@ -234,12 +235,6 @@ public class FPSController : MonoBehaviour
             bullet.transform.rotation = Quaternion.LookRotation(normal);
             bullet.SetActive(true);
         }
-
-        //Copiao de jordi arnal
-        GameObject l_GameObject = m_HitParticlesPool.GetnextElement();
-        l_GameObject.SetActive(true);
-        l_GameObject.transform.position = position;
-        l_GameObject.transform.rotation=Quaternion.LookRotation(normal);
     }
     void SetIdleWeaponAnim()
     {
@@ -269,20 +264,14 @@ public class FPSController : MonoBehaviour
     }
     IEnumerator Kill()
     {
+        StartCoroutine(GameController.GetGameController().GetFade().FadeIn(() =>
+            {
+                GameController.GetGameController().GetFade().gameObject.SetActive(false);
+                GameController.GetGameController().Restart();
+            }));
         yield return  new WaitForSeconds(1.5f);
         GameController.GetGameController().Restart();
-        StartCoroutine(GameController.GetGameController().GetFade().FadeIn(() =>
-        {
-            GameController.GetGameController().GetFade().gameObject.SetActive(false);
-            GameController.GetGameController().Restart();
-        }));
-    }
 
-    public IEnumerator FadeIn(OnFadeFinishedFn _OnFadeFinishedFn)
-    {
-        gameObject.SetActive(true);
-        m_Animation.Play(m_IdleAnimationClip.name);
-        yield return new WaitForSeconds(m_FadeAnimationClip.lenght);
     }
     public void Restart()
     {
