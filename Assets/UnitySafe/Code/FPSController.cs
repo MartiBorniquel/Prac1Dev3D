@@ -150,12 +150,15 @@ public class FPSController : MonoBehaviour
         else if ((l_CollisionFlags & CollisionFlags.CollidedBelow) != 0 && m_VerticalSpeed > 0.0f)
             m_VerticalSpeed = 0.0f;
 
-        if (CanShoot() && MustShoot() && !reloading)
+
+        if (!reloading && CanShoot() && MustShoot())
             Shoot();
-        else if (!CanShoot() && MustShoot()&&!reloading) StartCoroutine(Reload());
-        if (CanReload() && MustReload()&&!reloading)
+        else if (!reloading && !CanShoot() && MustShoot() && CanReload())
             StartCoroutine(Reload());
-        UpdateLifeBarEnemy();
+
+        if (!reloading && CanReload() && MustReload())
+            StartCoroutine(Reload());
+
     }
 
 
@@ -169,26 +172,28 @@ public class FPSController : MonoBehaviour
     {
         return Input.GetMouseButtonDown(m_ShootButton);
     }
+
     IEnumerator Reload()
     {
-        reloading = true; 
-        SetReloadWeaponAnim();
-        yield return new WaitForSeconds(m_DelayReload);
-        if (m_CurrentBullets <= 0)
-        {
-            m_InventoryBullets -= m_MaxBullets;
-        }
-        else
-        {
-               m_InventoryBullets -= (m_MaxBullets - m_CurrentBullets);
-        }
-        m_CurrentBullets = m_MaxBullets;
-        Debug.Log("Inventory bullets" + m_InventoryBullets);
+        if (reloading || !CanReload())
+            yield break;
 
+        reloading = true;
+        SetReloadWeaponAnim();
+
+        yield return new WaitForSeconds(m_ReloadAnimationClip.length);
+
+        int bulletsNeeded = m_MaxBullets - m_CurrentBullets;
+        int bulletsToReload = Mathf.Min(bulletsNeeded, m_InventoryBullets);
+
+        m_CurrentBullets += bulletsToReload;
+        m_InventoryBullets -= bulletsToReload;
 
         reloading = false;
-        Debug.Log("Reloaded: bullets " + m_CurrentBullets);
+
+        SetIdleWeaponAnim();
     }
+
     bool MustReload()
     {
         return Input.GetKeyDown(m_ReloadKey);
@@ -202,6 +207,9 @@ public class FPSController : MonoBehaviour
 
     void Shoot()
     {
+        if (reloading)
+            return;
+
         m_CurrentBullets -= 1;
         Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
 
