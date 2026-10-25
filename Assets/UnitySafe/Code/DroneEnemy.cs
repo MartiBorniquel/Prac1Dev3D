@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class DroneEnemy : MonoBehaviour
 {
@@ -21,12 +22,21 @@ public class DroneEnemy : MonoBehaviour
     public List<Transform> m_Waypoints;
     int m_CurrentPatrolId;
     public float m_ChaseDistance = 5;
+    public float m_AlertDistance = 3;
+    public float m_SightDistance = 7;
     public int m_MaxHealth = 50;
     public int m_Health;
     public int m_BodyHit = 20;
     public int m_HeadHit = 50;
     public int m_WingsHit = 10;
     public Transform m_LifeBarPosition;
+
+    public int ConeAngle = 160;
+    public int ConeRange = 10;
+    public GameObject AlertParticle;
+    GameObject m_player;
+
+
 
     private void Awake()
     {
@@ -75,10 +85,7 @@ public class DroneEnemy : MonoBehaviour
     {
         m_CurrentState = TState.IDLE;
     }
-    public void GetHealth()
-    {
 
-    }
     void SetPatrolState()
     {
         m_CurrentState = TState.PATROL;
@@ -126,12 +133,24 @@ public class DroneEnemy : MonoBehaviour
     void UpdateIdleState()
     {
         SetPatrolState();
+        m_CurrentPatrolId = GetClosestPatrolWaypoint();
+        m_NavMeshAgent.destination = m_Waypoints[m_CurrentPatrolId].position;
     }
 
     void UpdatePatrolState()
     {
+        Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
+        
+
         if (HasArrivedToWaypoint())
             MoveToNextPatrolPosition();
+        if (Vector3.Distance(transform.position, l_PlayerPosition) <= m_AlertDistance)
+        {
+            Debug.Log(Vector3.Distance(transform.position, l_PlayerPosition));
+            SetAlertState();
+        }
+        
+
     }
 
     void UpdateChaseState()
@@ -171,6 +190,17 @@ public class DroneEnemy : MonoBehaviour
         Vector3 l_Direction = (l_PlayerPosition - transform.position).normalized;
         m_NavMeshAgent.destination = transform.position + l_Direction * m_ChaseDistance;
     }
+
+    bool SeesPlayer()
+    {
+        GameObject player;
+
+        
+
+
+        return true;
+    }
+
     public void Hit(HitCollider.HitColliderType HitColliderType )
     {
         int l_LifePoints = 0;
@@ -204,5 +234,23 @@ public class DroneEnemy : MonoBehaviour
     public int GetLife()
     {
         return m_Health;
+    }
+
+    public void ConoVisual()
+    {
+        Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
+        Vector3 EnemyDirection = ((l_PlayerPosition - transform.position).normalized);
+
+        float ProdPunt = Vector3.Dot(EnemyDirection, transform.forward);
+
+        float anguloTransformado = (1 -( ConeAngle * 0.005555f));
+        if (anguloTransformado <= 0 ) { anguloTransformado = 0; }
+
+        bool inRange;
+
+        float enemyDistanceToObj = Vector3.Distance(l_PlayerPosition, transform.position);
+
+        if (enemyDistanceToObj && ProdPunt > anguloTransformado) { Debug.Log("Estoy viendo objetico"); }
+
     }
 }

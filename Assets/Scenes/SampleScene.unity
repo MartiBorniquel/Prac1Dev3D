@@ -19030,6 +19030,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_Health
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_Waypoints.Array.size
       value: 4
       objectReference: {fileID: 0}
