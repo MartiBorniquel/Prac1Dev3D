@@ -140,7 +140,7 @@ public class DroneEnemy : MonoBehaviour
     void UpdatePatrolState()
     {
         Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
-        
+        ConoVisual();
 
         if (HasArrivedToWaypoint())
             MoveToNextPatrolPosition();
@@ -246,11 +246,9 @@ public class DroneEnemy : MonoBehaviour
         float anguloTransformado = (1 -( ConeAngle * 0.005555f));
         if (anguloTransformado <= 0 ) { anguloTransformado = 0; }
 
-        bool inRange;
-
         float enemyDistanceToObj = Vector3.Distance(l_PlayerPosition, transform.position);
+        if (enemyDistanceToObj < ConeRange && ProdPunt > anguloTransformado) { Debug.Log("Estoy viendo objetico"); } else { Debug.Log("No veo"); }
 
-        if (enemyDistanceToObj && ProdPunt > anguloTransformado) { Debug.Log("Estoy viendo objetico"); }
-
+        bool inRange;
     }
 }

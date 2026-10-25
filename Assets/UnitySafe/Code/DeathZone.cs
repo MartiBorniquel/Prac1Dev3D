@@ -9,6 +9,6 @@ public class DeathZone : MonoBehaviour
         {
             Debug.Log("Muerte");
         }
-        
+
     }
 }
