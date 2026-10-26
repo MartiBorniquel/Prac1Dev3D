@@ -189,7 +189,6 @@ public class DroneEnemy : MonoBehaviour
     void UpdateAttackState()
     {
         Vector3 l_PlayerPosition = GameController.GetGameController().GetPlayer().transform.position;
-        Debug.Log("PiuPiu");
         float l_Distance = Vector3.Distance(transform.position, l_PlayerPosition);
 
         if (l_Distance > m_ShootMaxDistance)
@@ -342,6 +341,7 @@ public class DroneEnemy : MonoBehaviour
 
     public void Hit(HitCollider.HitColliderType HitColliderType )
     {
+        Debug.Log("Damn, u hit me");
         int l_LifePoints = 0;
         switch (HitColliderType)
         {

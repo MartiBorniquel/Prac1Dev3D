@@ -9504,6 +9504,14 @@ PrefabInstance:
       propertyPath: m_LifeBarPosition
       value: 
       objectReference: {fileID: 1134700550}
+    - target: {fileID: 3755881946670249419, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995840245177167013, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LocalPosition.x
       value: 152.63994
@@ -9544,9 +9552,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4771150206090218301, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180665249505021909, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7748310823525100932, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_Name
       value: DroneEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8023312642302600411, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055421606306705025, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
