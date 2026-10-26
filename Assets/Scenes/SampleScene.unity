@@ -9543,6 +9543,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2321631748450920995, guid: ef88c2e8075fd9548ac3054c70512e15, type: 3}
   m_PrefabInstance: {fileID: 357682977}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &357752790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 357752791}
+  m_Layer: 0
+  m_Name: ShootOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &357752791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357752790}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 822557125}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &358535384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30874,9 +30905,33 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_ShootTimer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: AlertParticle
       value: 
       objectReference: {fileID: 1704733272}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_ShootOrigin
+      value: 
+      objectReference: {fileID: 357752791}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_BulletPrefab
+      value: 
+      objectReference: {fileID: 5068894483676765296, guid: da7a87585230d3b4594398c972dc476a, type: 3}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_ShootMaxDistance
+      value: 9.999
+      objectReference: {fileID: 0}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_ShootMinDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_MinDistanceToChase
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_Waypoints.Array.size
       value: 4
@@ -30903,6 +30958,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1170175835860485398, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1704733270}
+    - targetCorrespondingSourceObject: {fileID: 1170175835860485398, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 357752791}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1978940702826274732, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       insertIndex: -1
