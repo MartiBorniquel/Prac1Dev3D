@@ -52,6 +52,14 @@ public class DroneEnemy : MonoBehaviour
     public Transform m_ShootOrigin;
     public GameObject m_BulletPrefab;
 
+    TState m_PreviousState;
+
+
+    float m_HitTimer;
+    public float m_HitTime = 0.5f;
+    //float m_DieTimer;
+    //public float m_DieTime = 2.0f;
+
 
 
     private void Awake()
@@ -187,6 +195,7 @@ public class DroneEnemy : MonoBehaviour
         if (l_Distance > m_ShootMaxDistance)
         {
             m_NavMeshAgent.isStopped = false;
+            m_ShootTimer = 1.5f;
             SetChaseState();
             return;
         }
@@ -245,7 +254,30 @@ public class DroneEnemy : MonoBehaviour
 
     void UpdateHitState()
     {
-        // Hit logic here
+        m_HitTimer += Time.deltaTime;
+
+        if (m_HitTimer >= m_HitTime)
+        {
+            if (m_PreviousState == TState.IDLE || m_PreviousState == TState.PATROL)
+            {
+                m_AlertTimer = 0.0f;
+                m_NavMeshAgent.isStopped = true;
+                SetAlertState();
+            }
+            else
+            {
+                m_CurrentState = m_PreviousState;
+
+                if (m_CurrentState == TState.CHASE)
+                {
+                    m_NavMeshAgent.isStopped = false;
+                }
+                else
+                {
+                    m_NavMeshAgent.isStopped = true;
+                }
+            }
+        }
     }
 
     void UpdateDieState()
