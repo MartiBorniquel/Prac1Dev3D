@@ -1,31 +1,38 @@
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
     public Transform m_DestroyObjects;
     public static GameController m_GameController=null;
-    public KeyCode m_RestartKeyCode = KeyCode.R;
+    public KeyCode m_RestartKeyCode = KeyCode.X;
     FPSController m_Player;
     InGameUI m_IngameUI;
     List<DroneEnemy> m_EnemyList = new List<DroneEnemy>();
     DroneEnemy m_Enemies;
     Fade m_fade;
+    public GameObject gameOverUI;
+    public bool GameOverScreen = false; 
 
     public void SetFade(Fade _Fade) { m_fade = _Fade; }
     public Fade GetFade() { return m_fade; }
 
     private void Awake()
     {
-        if(m_GameController  == null)
+        if (m_GameController == null)
         {
-            m_GameController=this;
+            m_GameController = this;
             DontDestroyOnLoad(gameObject);
         }
-        else 
-            GameObject.Destroy(gameObject);   
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (gameOverUI != null)
+            gameOverUI.SetActive(false);
     }
     static public GameController GetGameController() 
     {
@@ -47,17 +54,41 @@ public class GameController : MonoBehaviour
     {
         return m_EnemyList;
     }
-    
-    public void Restart()
+
+    IEnumerator RestartGame()
     {
-        for (int i = 0; i < m_DestroyObjects.childCount; ++i)
-            GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);
-        m_Player.Restart();
-        StartCoroutine(m_fade.FadeOut());
+        GameOverScreen = false;
+
+        if (gameOverUI != null)
+            gameOverUI.SetActive(false);
+
+        if (m_DestroyObjects != null)
+        {
+            for (int i = m_DestroyObjects.childCount - 1; i >= 0; i--)
+            {
+                Destroy(m_DestroyObjects.GetChild(i).gameObject);
+            }
+        }
+
+        if (m_Player != null)
+            m_Player.Restart();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (m_fade != null)
+            yield return StartCoroutine(m_fade.FadeOut());
     }
     private void Update()
     {
-        if (Input.GetKeyDown(m_RestartKeyCode)) Restart();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        if (GameOverScreen && Input.GetKeyDown(m_RestartKeyCode))
+        {
+            StartCoroutine(RestartGame());
+        }
     }
     public FPSController GetPlayer()
     {
@@ -66,5 +97,18 @@ public class GameController : MonoBehaviour
     public void SetPlayer(FPSController Player)
     {
         m_Player= Player;
+    }
+    public void GameOverUI()
+    {
+        if (GameOverScreen)
+            return;
+
+        GameOverScreen = true;
+
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

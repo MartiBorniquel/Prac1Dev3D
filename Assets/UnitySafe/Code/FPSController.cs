@@ -57,7 +57,8 @@ public class FPSController : MonoBehaviour
     public int m_InventoryBullets=90;
     public CPoolElements m_HitParticlesPool;
 
-    Score score; 
+    Score score;
+    bool m_IsDead = false;
 
     private void Awake()
     {
@@ -73,12 +74,15 @@ public class FPSController : MonoBehaviour
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
         m_CurrentBullets = m_MaxBullets;
-        
+        bool m_IsDead = false;
+
         //m_HitParticlesPool = new CPoolElements(10, m_HitParticlePrefab); lo dejo asi pk ya hice mi pool de objetos
     }
 
     private void Update()
     {
+        if (GameController.GetGameController().GameOverScreen)
+            return;
 
         if (Input.GetKeyDown(m_LockAngle))
             angleLocked = !angleLocked;
@@ -282,21 +286,23 @@ public class FPSController : MonoBehaviour
     }
     IEnumerator Kill()
     {
-        StartCoroutine(GameController.GetGameController().GetFade().FadeIn(() =>
-            {
-                GameController.GetGameController().GetFade().gameObject.SetActive(false);
-                GameController.GetGameController().Restart();
-            }));
-        yield return  new WaitForSeconds(1.5f);
-        GameController.GetGameController().Restart();
+        if (m_IsDead)
+            yield break;
 
+        m_IsDead = true;
+
+        GameController.GetGameController().GameOverUI();
+
+        yield return null;
     }
     public void Restart()
     {
+        GetComponent<PlayerHealth>().RestartHealth();
         m_CharacterController.enabled = false;
         transform.position = m_StartPosition;
         transform.rotation = m_StartRotation;
         m_CharacterController.enabled = true;
+        
     }
      void UpdateLifeBarEnemy()
     {

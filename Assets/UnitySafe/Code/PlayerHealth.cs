@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     public int m_health;
     public int m_shield;
     FPSController m_Player;
+    bool m_IsDead = false;
 
     void Start()
     {
@@ -17,14 +19,18 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (m_health <= 0)
+        if (m_health <= 0 && !m_IsDead)
         {
-            m_Player.Restart();
+            m_IsDead = true;
+            GameController.GetGameController().GameOverUI();
         }
     }
 
     public void TakeDamage(int damageReceived)
     {
+        if (m_IsDead)
+            return;
+
         if (m_shield > 0)
         {
             int shieldDamage = (int)(damageReceived * 0.75f);
@@ -50,15 +56,29 @@ public class PlayerHealth : MonoBehaviour
         m_health = Mathf.Clamp(m_health, 0, m_MaxHealth);
         m_shield = Mathf.Clamp(m_shield, 0, m_MaxShield);
     }
+
     public void HealLife(int amount)
     {
+        if (m_IsDead)
+            return;
+
         m_health += amount;
         m_health = Mathf.Clamp(m_health, 0, m_MaxHealth);
     }
+
     public void HealShield(int amount)
     {
+        if (m_IsDead)
+            return;
+
         m_shield += amount;
         m_shield = Mathf.Clamp(m_shield, 0, m_MaxShield);
+    }
 
+    public void RestartHealth()
+    {
+        m_health = m_MaxHealth;
+        m_shield = m_MaxShield;
+        m_IsDead = false;
     }
 }
