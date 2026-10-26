@@ -100,8 +100,10 @@ public class DroneEnemy : MonoBehaviour
                 UpdateDieState();
                 break;
         }
-
-
+        if(m_Health <= 0)
+        {
+            SetDieState();
+        }
     }
 
     void SetIdleState()
