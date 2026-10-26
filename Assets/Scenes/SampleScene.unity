@@ -20652,7 +20652,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.48966944
-  m_BaseOffset: 2.69
+  m_BaseOffset: 7.87
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!1001 &802635040
@@ -26232,7 +26232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 80237635795617920, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 146707581933220187, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_LocalScale.x
@@ -26303,6 +26303,10 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
+      propertyPath: m_MaxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_ShootTimer
       value: 1
       objectReference: {fileID: 0}
@@ -26320,7 +26324,7 @@ PrefabInstance:
       objectReference: {fileID: 5068894483676765296, guid: da7a87585230d3b4594398c972dc476a, type: 3}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_ShootMaxDistance
-      value: 9.999
+      value: 9.9999
       objectReference: {fileID: 0}
     - target: {fileID: 919713294470760396, guid: c07983bf79ba84746b5a095c446146e9, type: 3}
       propertyPath: m_ShootMinDistance
@@ -60706,13 +60710,37 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_Health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: ConeAngle
-      value: 6
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: ConeRange
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_RotSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_MaxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_ShootTimer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: AlertParticle
+      value: 
+      objectReference: {fileID: 1704733272}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_ShootOrigin
+      value: 
+      objectReference: {fileID: 1044822907}
     - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_BulletPrefab
       value: 
@@ -60720,7 +60748,15 @@ PrefabInstance:
     - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LifeBarPosition
       value: 
-      objectReference: {fileID: 1981860601}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_ShootMaxDistance
+      value: 9.9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_ShootMinDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2125304832888296903, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_Waypoints.Array.size
       value: 4
@@ -60750,16 +60786,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.37335286
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.37335286
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.37335286
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -54.71
+      value: -55.007
       objectReference: {fileID: 0}
     - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.85
+      value: 3.37
       objectReference: {fileID: 0}
     - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.93
+      value: -14.367
       objectReference: {fileID: 0}
     - target: {fileID: 4605940551308558683, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
       propertyPath: m_LocalRotation.w
@@ -60820,11 +60868,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 800964730}
   m_SourcePrefab: {fileID: 100100000, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
---- !u!4 &1981860601 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3720980977972412815, guid: d6c281a936b985d4798cae1c3c6b8695, type: 3}
-  m_PrefabInstance: {fileID: 1981860600}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1983391685 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8673959561017236314, guid: 8d1d721302bbd34489932bc5f7dbc547, type: 3}

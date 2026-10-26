@@ -256,6 +256,7 @@ public class DroneEnemy : MonoBehaviour
         m_HitTimer += Time.deltaTime;
 
         if (m_HitTimer >= m_HitTime)
+        if (m_HitTimer >= m_HitTime)
         {
             if (m_PreviousState == TState.IDLE || m_PreviousState == TState.PATROL)
             {

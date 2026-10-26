@@ -299,7 +299,7 @@
 //                }
 //            }
 //        }
-//        */  
+//        */
 //        if (m_BulletPrefab == null || m_ShootOrigin == null) return;
 
 //        Vector3 l_Direction = (m_Player.position - m_ShootOrigin.position).normalized;
