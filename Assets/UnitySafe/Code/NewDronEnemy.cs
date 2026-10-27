@@ -20,11 +20,9 @@ public class DroneEnemy : MonoBehaviour
     TState m_CurrentState = TState.IDLE;
     TState m_PreviousState = TState.IDLE;
 
-    [Header("Patrulla")]
     public List<Transform> m_Waypoints;
     int m_CurrentPatrolId;
 
-    [Header("Vida")]
     public int m_MaxHealth = 50;
     public int m_Health;
     public int m_BodyHit = 20;
@@ -32,31 +30,27 @@ public class DroneEnemy : MonoBehaviour
     public int m_WingsHit = 10;
     public Transform m_LifeBarPosition;
 
-    [Header("IDLE / HIT / DIE")]
-    public float m_IdleTime = 2.0f;
+    public float m_IdleTime = 2;
     public float m_HitDuration = 0.5f;
-    public float m_DieFadeTime = 2.0f;
+    public float m_DieFadeTime = 2f;
     float m_IdleTimer;
     float m_HitTimer;
 
-    [Header("ALERT")]
-    public float m_HearDistance = 5.0f;          // radio en el que "oye" al player
-    public float m_AlertDuration = 3.0f;         // tiempo girando antes de volver a PATROL
-    public float m_AlertRotationSpeed = 120.0f;  // grados por segundo
+    public float m_HearDistance = 5f;          
+    public float m_AlertDuration = 3f;         
+    public float m_AlertRotationSpeed = 120f;  
     float m_AlertTimer;
 
-    [Header("Cono de vision")]
-    public float ConeAngle = 160.0f;             // angulo total del cono
-    public float ConeRange = 10.0f;
+    [Header("Cone mesures")]
+    public float ConeAngle = 160f;             
+    public float ConeRange = 10f;
 
-    [Header("CHASE")]
-    public float m_MinDistanceToChase = 10.0f;   // MIN: por debajo pasa a ATTACK
-    public float m_MaxDistanceToChase = 15.0f;   // MAX: por encima vuelve a PATROL
+    public float m_MinDistanceToChase = 10f;   
+    public float m_MaxDistanceToChase = 15f;   
 
-    [Header("ATTACK")]
-    public float m_ShootMaxDistance = 12.0f;     // SHOOT_MAX: debe ser mayor que MIN
+    public float m_ShootMaxDistance = 12f;     
     public float m_ShootInterval = 1.5f;
-    public float m_FaceSpeed = 6.0f;
+    public float m_FaceSpeed = 6f;
     public Transform m_ShootOrigin;
     public GameObject m_BulletPrefab;
     float m_ShootTimer;
@@ -103,10 +97,6 @@ public class DroneEnemy : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------------
-    // SET STATES
-    // ---------------------------------------------------------------
-
     void SetIdleState()
     {
         m_CurrentState = TState.IDLE;
@@ -117,11 +107,6 @@ public class DroneEnemy : MonoBehaviour
     void SetPatrolState()
     {
         m_CurrentState = TState.PATROL;
-        if (m_Waypoints == null || m_Waypoints.Count == 0)
-        {
-            SetIdleState();
-            return;
-        }
         m_NavMeshAgent.isStopped = false;
         m_CurrentPatrolId = GetClosestPatrolWaypoint();
         m_NavMeshAgent.destination = m_Waypoints[m_CurrentPatrolId].position;

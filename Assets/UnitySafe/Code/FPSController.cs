@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 public class FPSController : MonoBehaviour
 {
     public Transform m_PitchController;
@@ -44,6 +43,7 @@ public class FPSController : MonoBehaviour
     public AnimationClip m_ShootAnimationClip;
     public AnimationClip m_ReloadAnimationClip;
 
+    // Posicion/rotacion de reaparicion (se actualiza al pasar por un checkpoint)
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
 
@@ -52,9 +52,9 @@ public class FPSController : MonoBehaviour
     public int m_Score = 0;
     public int m_MaxBullets = 30;
     public int m_CurrentBullets;
-    bool reloading=false;
+    bool reloading = false;
     public int m_DelayReload;
-    public int m_InventoryBullets=90;
+    public int m_InventoryBullets = 90;
     public CPoolElements m_HitParticlesPool;
 
     Score score;
@@ -74,7 +74,7 @@ public class FPSController : MonoBehaviour
         m_StartRotation = transform.rotation;
         GameController.GetGameController().SetPlayer(this);
         m_CurrentBullets = m_MaxBullets;
-        bool m_IsDead = false;
+        m_IsDead = false;
 
         //m_HitParticlesPool = new CPoolElements(10, m_HitParticlePrefab); lo dejo asi pk ya hice mi pool de objetos
     }
@@ -168,7 +168,7 @@ public class FPSController : MonoBehaviour
 
     bool CanShoot()
     {
-        if(m_CurrentBullets<=0) { return false; }
+        if (m_CurrentBullets <= 0) { return false; }
         return true;
     }
 
@@ -247,7 +247,7 @@ public class FPSController : MonoBehaviour
         //GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
         //l_GameObject.transform.position = position;
         //l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
-        
+
         //GameObject l_GameObject = m_HitParticlesPool.GetNextElement();
         //l_GameObject.SetActive(true)
         GameObject bullet = ObjectPooling.SharedInstance.GetPooledObject();
@@ -282,7 +282,7 @@ public class FPSController : MonoBehaviour
                 l_Item.CanPick();
             }
         }
-        else if (other.CompareTag("DeadZone")) { Kill(); }
+        else if (other.CompareTag("DeadZone")) { StartCoroutine(Kill()); }
     }
     IEnumerator Kill()
     {
@@ -295,17 +295,27 @@ public class FPSController : MonoBehaviour
 
         yield return null;
     }
+
+    // Lo llama CheckpointZone al pasar por una zona de checkpoint
+    public void SetCheckpoint(Vector3 position, Quaternion rotation)
+    {
+        m_StartPosition = position;
+        m_StartRotation = rotation;
+    }
+
     public void Restart()
     {
-        //Cuando pasas a una zona checkpoint se actualiza la posicion de restart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         GetComponent<PlayerHealth>().RestartHealth();
         m_CharacterController.enabled = false;
         transform.position = m_StartPosition;
         transform.rotation = m_StartRotation;
         m_CharacterController.enabled = true;
-        
+
+        //m_Yaw = m_StartRotation.eulerAngles.y;
+        //m_VerticalSpeed = 0.0f;
+        m_IsDead = false;
     }
-     void UpdateLifeBarEnemy()
+    void UpdateLifeBarEnemy()
     {
         GameController l_GameController = GameController.GetGameController();
         List<DroneEnemy> l_Enemies = l_GameController.GetEnemies();
@@ -313,7 +323,7 @@ public class FPSController : MonoBehaviour
         LifeBarElementUI l_LifebarElementUI = l_GameController.GetIngameUI().m_lifeBarElementUI;
         l_LifebarElementUI.Hide();
 
-        foreach(DroneEnemy l_Enemy in l_Enemies)
+        foreach (DroneEnemy l_Enemy in l_Enemies)
         {
             Vector3 l_ViewPoint = m_Camera.WorldToViewportPoint(l_Enemy.transform.position);
             bool l_EnemyInvisible = l_ViewPoint.z >= 0 && l_ViewPoint.x <= 1.0f && l_ViewPoint.y >= 0 && l_ViewPoint.y <= 1.0f;
