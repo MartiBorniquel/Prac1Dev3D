@@ -24,10 +24,14 @@ public class DroneEnemy : MonoBehaviour
     int m_CurrentPatrolId;
 
     [Header("Drop")]
-    public Item Medkit;                       // prefab del medkit
-    public Item Ammo;                         // prefab de la municion
-    [Range(0f, 1f)] public float m_DropChance = 1.0f;   // 1 = siempre suelta algo
-    [Range(0f, 1f)] public float m_MedkitChance = 0.5f; // 0.5 = 50% medkit / 50% ammo
+    public Item Medkit;
+    public Item Shield;
+    public Item Key;
+    public Item Ammo;
+    public bool KeyHolder;
+    [Range(0f, 1f)] public float m_DropChance = 1.0f;  
+    [Range(0f, 1f)] public float m_MedkitChance = 0.33f;
+    [Range(0f, 1f)] public float m_ShieldChance = 0.66f;
 
     public int m_MaxHealth = 50;
     public int m_Health;
@@ -379,8 +383,13 @@ public class DroneEnemy : MonoBehaviour
     {
         Item l_Prefab;
 
-        if(Random.value < m_MedkitChance) { l_Prefab=Medkit ; } else { l_Prefab=Ammo ; }
-
+        if(Random.value < m_MedkitChance) { l_Prefab=Medkit ; }
+        else if(Random.value < m_ShieldChance && Random.value < m_MedkitChance) { l_Prefab=Shield ; }
+        else { l_Prefab = Ammo;  }
+        if(KeyHolder)
+        {
+            Instantiate(Key, transform.position, Quaternion.identity);
+        }
             Instantiate(l_Prefab, transform.position, Quaternion.identity);
     }
 
