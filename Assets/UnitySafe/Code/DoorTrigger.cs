@@ -8,6 +8,7 @@ public class DoorTrigger : MonoBehaviour
 
     public bool lockedByScore = false;
     public int requiredScore = 50;
+    public Light pointLight;
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
@@ -21,6 +22,7 @@ public class DoorTrigger : MonoBehaviour
             {
                 locked = false;
                 door.OpenDoor();
+                pointLight.color = new Color(0f, 1f, 0f);
             }
         }
         else if (lockedByScore)
@@ -29,6 +31,7 @@ public class DoorTrigger : MonoBehaviour
             {
                 lockedByScore = false;
                 door.OpenDoor();
+                pointLight.color = new Color(0f, 1f, 0f);
             }
         }
         else
