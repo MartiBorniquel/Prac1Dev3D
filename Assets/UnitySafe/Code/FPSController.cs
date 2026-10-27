@@ -297,6 +297,7 @@ public class FPSController : MonoBehaviour
     }
     public void Restart()
     {
+        //Cuando pasas a una zona checkpoint se actualiza la posicion de restart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         GetComponent<PlayerHealth>().RestartHealth();
         m_CharacterController.enabled = false;
         transform.position = m_StartPosition;

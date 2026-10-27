@@ -29,10 +29,10 @@ public class DroneBullet : MonoBehaviour
         if (other.GetComponentInParent<DroneBullet>() != null) return;
         if (other.GetComponentInParent<DroneEnemy>() != null) return;
 
-        FPSController l_Player = other.GetComponentInParent<FPSController>();
-        if (l_Player != null)
+        PlayerHealth l_PlayerHealth = other.GetComponentInParent<PlayerHealth>();
+        if (other.CompareTag("Player"))
         {
-            //l_Player.TakeDamage(m_Damage);
+            l_PlayerHealth.TakeDamage(m_Damage);
             Debug.Log("PlayerDañado");
         }
 
