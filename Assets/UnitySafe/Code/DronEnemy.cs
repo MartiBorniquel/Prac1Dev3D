@@ -23,6 +23,12 @@ public class DroneEnemy : MonoBehaviour
     public List<Transform> m_Waypoints;
     int m_CurrentPatrolId;
 
+    [Header("Drop")]
+    public Item Medkit;                       // prefab del medkit
+    public Item Ammo;                         // prefab de la municion
+    [Range(0f, 1f)] public float m_DropChance = 1.0f;   // 1 = siempre suelta algo
+    [Range(0f, 1f)] public float m_MedkitChance = 0.5f; // 0.5 = 50% medkit / 50% ammo
+
     public int m_MaxHealth = 50;
     public int m_Health;
     public int m_BodyHit = 20;
@@ -36,19 +42,19 @@ public class DroneEnemy : MonoBehaviour
     float m_IdleTimer;
     float m_HitTimer;
 
-    public float m_HearDistance = 5f;          
-    public float m_AlertDuration = 3f;         
-    public float m_AlertRotationSpeed = 120f;  
+    public float m_HearDistance = 5f;
+    public float m_AlertDuration = 3f;
+    public float m_AlertRotationSpeed = 120f;
     float m_AlertTimer;
 
     [Header("Cone mesures")]
-    public float ConeAngle = 160f;             
+    public float ConeAngle = 160f;
     public float ConeRange = 10f;
 
-    public float m_MinDistanceToChase = 10f;   
-    public float m_MaxDistanceToChase = 15f;   
+    public float m_MinDistanceToChase = 10f;
+    public float m_MaxDistanceToChase = 15f;
 
-    public float m_ShootMaxDistance = 12f;     
+    public float m_ShootMaxDistance = 12f;
     public float m_ShootInterval = 1.5f;
     public float m_FaceSpeed = 6f;
     public Transform m_ShootOrigin;
@@ -149,12 +155,9 @@ public class DroneEnemy : MonoBehaviour
         foreach (Collider l_Collider in GetComponentsInChildren<Collider>())
             l_Collider.enabled = false;
 
+        DropItem();   // una sola vez, al entrar en DIE
         StartCoroutine(FadeAndDestroy());
     }
-
-    // ---------------------------------------------------------------
-    // UPDATE STATES
-    // ---------------------------------------------------------------
 
     void UpdateIdleState()
     {
@@ -218,7 +221,6 @@ public class DroneEnemy : MonoBehaviour
             return;
         }
 
-        // Orientarse hacia el player
         Vector3 l_Direction = l_PlayerPosition - transform.position;
         if (l_Direction.sqrMagnitude > 0.001f)
         {
@@ -255,12 +257,8 @@ public class DroneEnemy : MonoBehaviour
 
     void UpdateDieState()
     {
-        // El fade lo hace la corrutina FadeAndDestroy
+        // El fade y la destruccion los hace la corrutina FadeAndDestroy
     }
-
-    // ---------------------------------------------------------------
-    // PATRULLA
-    // ---------------------------------------------------------------
 
     int GetClosestPatrolWaypoint()
     {
@@ -288,10 +286,6 @@ public class DroneEnemy : MonoBehaviour
         m_CurrentPatrolId = (m_CurrentPatrolId + 1) % m_Waypoints.Count;
         m_NavMeshAgent.destination = m_Waypoints[m_CurrentPatrolId].position;
     }
-
-    // ---------------------------------------------------------------
-    // VIDA / DAÑO
-    // ---------------------------------------------------------------
 
     public void Hit(HitCollider.HitColliderType HitColliderType)
     {
@@ -322,7 +316,6 @@ public class DroneEnemy : MonoBehaviour
             return;
         }
 
-        // Si ya esta en HIT no machacamos el estado guardado
         if (m_CurrentState != TState.HIT)
             m_PreviousState = m_CurrentState;
 
@@ -359,13 +352,8 @@ public class DroneEnemy : MonoBehaviour
             yield return null;
         }
 
-        // Si tu GameController tiene RemoveEnemy, llamalo aqui antes de destruir
         Destroy(gameObject);
     }
-
-    // ---------------------------------------------------------------
-    // SENTIDOS Y DISPARO
-    // ---------------------------------------------------------------
 
     public bool ConoVisual()
     {
@@ -386,7 +374,15 @@ public class DroneEnemy : MonoBehaviour
 
         Instantiate(m_BulletPrefab, m_ShootOrigin.position, l_Rotation);
     }
-    
+
+    public void DropItem()
+    {
+        Item l_Prefab;
+
+        if(Random.value < m_MedkitChance) { l_Prefab=Medkit ; } else { l_Prefab=Ammo ; }
+
+            Instantiate(l_Prefab, transform.position, Quaternion.identity);
+    }
 
     void OnDrawGizmosSelected()
     {
@@ -404,5 +400,4 @@ public class DroneEnemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(l_Origin, transform.forward * ConeRange);
     }
-
 }
