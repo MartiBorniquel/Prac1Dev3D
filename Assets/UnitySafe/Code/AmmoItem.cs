@@ -3,8 +3,12 @@ using UnityEngine;
 public class AmmoItem : Item
 {
 
-    public int m_AmmoCount = 20;
+    public int m_AmmoCount = 30;
     FPSController m_Player;
+    private void Start()
+    {
+        m_Player = FindObjectOfType<FPSController>();
+    }
     public override bool CanPick()
     {
         return true;
@@ -13,7 +17,7 @@ public class AmmoItem : Item
     {
         base.Pick();
         m_Player.m_InventoryBullets += m_AmmoCount;
-        Debug.Log("Picked Ammo item"+m_Player.m_InventoryBullets);
+    
     }
     private void OnTriggerEnter(Collider other)
     {
