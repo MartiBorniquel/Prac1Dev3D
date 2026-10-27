@@ -65,4 +65,21 @@ public class ShootingRangeManager : MonoBehaviour
             StopAllCoroutines();
         }
     }
+    public void RestartChallenge()
+    {
+        StopAllCoroutines();
+
+        foreach (ShootingTarget target in targets)
+        {
+            if (target.isUp)
+            {
+                target.DeactivateTarget();
+            }
+        }
+
+        if (m_inside)
+        {
+            StartCoroutine(ShootingSequence());
+        }
+    }
 }

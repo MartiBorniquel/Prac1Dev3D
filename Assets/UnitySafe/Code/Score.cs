@@ -8,9 +8,11 @@ public class Score : MonoBehaviour
     public int m_score;
     public GameObject m_ScoreUI;
     public KeyCode Restart = KeyCode.P;
+    FPSController m_player;
 
     void Start()
     {
+        m_player = FindObjectOfType<FPSController>();
         if (m_ScoreUI != null)
         {
             m_textScore = m_ScoreUI.GetComponentInChildren<TMP_Text>(true);
@@ -21,20 +23,23 @@ public class Score : MonoBehaviour
 
     void Update()
     {
-        if (m_textScore != null&& m_score < 50)
+        if (m_textScore != null)
         {
-            m_textScore.text = "Score: " + m_score + "/50\nExit the shooting range or press P to restart the challenge";
+            if (m_score < 50)
+            {
+                m_textScore.text = "Score: " + m_score + "/50\nExit the shooting range or press P to restart the challenge";
+            }
+            else
+            {
+                m_textScore.text = "Congratulations!\nYou can open the door now to access the next area!\nPress P to restart challenge";
+            }
         }
-        else
-        {
-            m_textScore.text = "Congratulations!\nYou can open the door now to acces the next area!\n Press P to restart challenge";
-        }
+
         if (Input.GetKeyDown(Restart))
         {
-            m_score = 0;
+            ResetScore();
+            FindObjectOfType<ShootingRangeManager>().RestartChallenge();
         }
-            
-
     }
 
     public void SumScore(int EnteringScore)
@@ -46,6 +51,7 @@ public class Score : MonoBehaviour
     public void ResetScore()
     {
         m_score = 0;
+        m_player.m_Score = 0;
     }
 
     public void HideScoreUI()
