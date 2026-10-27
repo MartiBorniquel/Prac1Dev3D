@@ -6,12 +6,12 @@ public class ObjectPooling : MonoBehaviour
 {
     public static ObjectPooling SharedInstance;
 
-    public List<GameObject> pooledObjects;
-    public GameObject objectToPool;
+    public List<GameObject> m_pooledObjects;
+    public GameObject m_objectToPool;
 
-    public int amountToPool = 25;
+    public int m_amountToPool = 25;
 
-    private int nextObjectIndex = 0;
+    private int m_nextObjectIndex = 0;
 
     void Awake()
     {
@@ -19,26 +19,26 @@ public class ObjectPooling : MonoBehaviour
     }
     void Start()
     {
-        pooledObjects = new List<GameObject>();
+        m_pooledObjects = new List<GameObject>();
 
-        for (int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < m_amountToPool; i++)
         {
-            GameObject tmp = Instantiate(objectToPool);
+            GameObject tmp = Instantiate(m_objectToPool);
             tmp.SetActive(false);
-            pooledObjects.Add(tmp);
+            m_pooledObjects.Add(tmp);
         }
     }
 
     public GameObject GetPooledObject()
     {
-        if (pooledObjects == null || pooledObjects.Count == 0)
+        if (m_pooledObjects == null || m_pooledObjects.Count == 0)
             return null;
 
-        GameObject pooledObject = pooledObjects[nextObjectIndex];
-        nextObjectIndex++;
+        GameObject pooledObject = m_pooledObjects[m_nextObjectIndex];
+        m_nextObjectIndex++;
 
-        if (nextObjectIndex >= pooledObjects.Count)
-            nextObjectIndex = 0;
+        if (m_nextObjectIndex >= m_pooledObjects.Count)
+            m_nextObjectIndex = 0;
 
         return pooledObject;
     }

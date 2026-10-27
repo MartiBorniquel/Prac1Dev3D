@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    private TMP_Text textScore;
-    public int score;
-    public GameObject ScoreUI;
+    private TMP_Text m_textScore;
+    public int m_score;
+    public GameObject m_ScoreUI;
     public KeyCode Restart = KeyCode.P;
+    FPSController m_player;
 
     void Start()
     {
-        if (ScoreUI != null)
+        m_player = FindObjectOfType<FPSController>();
+        if (m_ScoreUI != null)
         {
-            textScore = ScoreUI.GetComponentInChildren<TMP_Text>(true);
+            m_textScore = m_ScoreUI.GetComponentInChildren<TMP_Text>(true);
             HideScoreUI();
         }
         
@@ -21,42 +23,46 @@ public class Score : MonoBehaviour
 
     void Update()
     {
-        if (textScore != null&&score<50)
+        if (m_textScore != null)
         {
-            textScore.text = "Score: " + score + "/50\nExit the shooting range or press P to restart the challenge";
+            if (m_score < 50)
+            {
+                m_textScore.text = "Score: " + m_score + "/50\nExit the shooting range or press P to restart the challenge";
+            }
+            else
+            {
+                m_textScore.text = "Congratulations!\nYou can open the door now to access the next area!\nPress P to restart challenge";
+            }
         }
-        else
-        {
-            textScore.text = "Congratulations!\nYou can open the door now to acces the next area!\n Press P to restart challenge";
-        }
+
         if (Input.GetKeyDown(Restart))
         {
-            score = 0;
+            ResetScore();
+            FindObjectOfType<ShootingRangeManager>().RestartChallenge();
         }
-            
-
     }
 
     public void SumScore(int EnteringScore)
     {
-        if(score<50)
-        score += EnteringScore;
+        if(m_score < 50)
+            m_score += EnteringScore;
     }
 
     public void ResetScore()
     {
-        score = 0;
+        m_score = 0;
+        m_player.m_Score = 0;
     }
 
     public void HideScoreUI()
     {
-        if (ScoreUI != null)
-            ScoreUI.SetActive(false);
+        if (m_ScoreUI != null)
+            m_ScoreUI.SetActive(false);
     }
 
     public void ShowScoreUI()
     {
-        if (ScoreUI != null)
-            ScoreUI.SetActive(true);
+        if (m_ScoreUI != null)
+            m_ScoreUI.SetActive(true);
     }
 }
