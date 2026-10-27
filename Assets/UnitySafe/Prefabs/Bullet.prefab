@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6540579919545059324}
   - component: {fileID: 7941922295224238227}
   - component: {fileID: 2618464703938273815}
-  - component: {fileID: 1666422267414267753}
-  - component: {fileID: 2356686146485935951}
+  - component: {fileID: -6674761223036658936}
+  - component: {fileID: 6985543566600803333}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -114,22 +114,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1666422267414267753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5068894483676765296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e204bed4e61dd5240922d29b06eeeb33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DroneBullet
-  m_Speed: 12
-  m_Damage: 10
-  m_LifeTime: 5
---- !u!54 &2356686146485935951
+--- !u!54 &-6674761223036658936
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +137,22 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6985543566600803333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5068894483676765296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab4b8377868f704b8804f33c3f7816f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DroneBullet
+  m_Speed: 12
+  m_Damage: 10
+  m_LifeTime: 5
