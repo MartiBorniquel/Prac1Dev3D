@@ -24,18 +24,14 @@ public class DroneBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Ignorar triggers (zonas, etc.), otras balas y a los propios drones
         if (other.isTrigger) return;
         if (other.GetComponentInParent<DroneBullet>() != null) return;
         if (other.GetComponentInParent<DroneEnemy>() != null) return;
-
-        Debug.Log("Bala toca: " + other.name);   // quitalo cuando funcione
-
+  
         PlayerHealth l_PlayerHealth = other.GetComponentInParent<PlayerHealth>();
         if (l_PlayerHealth != null)
         {
             l_PlayerHealth.TakeDamage(m_Damage);
-            Debug.Log("PlayerDañado");
         }
 
         Destroy(gameObject);

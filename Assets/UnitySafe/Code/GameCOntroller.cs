@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
         if (m_GameController == null)
         {
             m_GameController = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {

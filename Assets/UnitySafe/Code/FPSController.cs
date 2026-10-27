@@ -43,7 +43,6 @@ public class FPSController : MonoBehaviour
     public AnimationClip m_ShootAnimationClip;
     public AnimationClip m_ReloadAnimationClip;
 
-    // Posicion/rotacion de reaparicion (se actualiza al pasar por un checkpoint)
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
 
@@ -132,20 +131,9 @@ public class FPSController : MonoBehaviour
 
         m_VerticalSpeed = m_VerticalSpeed + Physics.gravity.y * Time.deltaTime;
 
-        //if (Input.GetKey(m_RightKeyCode))
-        //    l_Direction = l_Right;
-        //else if (Input.GetKey(m_LeftKeyCode))
-        //    l_Direction = -l_Right;
-
-        //if (Input.GetKey(m_UpKeyCode))
-        //    l_Direction += l_Forward;
-        //else if (Input.GetKey(m_DownKeyCode))
-        //    l_Direction -= l_Forward;
-
         m_VerticalSpeed = m_VerticalSpeed + Physics.gravity.y * Time.deltaTime;
 
         l_Direction.Normalize();
-        //transform.position = transform.position + l_Direction * m_Speed * Time.deltaTime;
         l_Direction = l_Direction * l_Speed * Time.deltaTime;
         l_Direction.y = m_VerticalSpeed * Time.deltaTime;
         CollisionFlags l_CollisionFlags = m_CharacterController.Move(l_Direction);
@@ -244,12 +232,6 @@ public class FPSController : MonoBehaviour
 
     void CreateShootHitParticles(Vector3 position, Vector3 normal)
     {
-        //GameObject l_GameObject = GameObject.Instantiate(m_HitParticlePrefab, GameController.GetGameController().m_DestroyObjects);
-        //l_GameObject.transform.position = position;
-        //l_GameObject.transform.rotation = Quaternion.LookRotation(normal);
-
-        //GameObject l_GameObject = m_HitParticlesPool.GetNextElement();
-        //l_GameObject.SetActive(true)
         GameObject bullet = ObjectPooling.SharedInstance.GetPooledObject();
         if (bullet != null)
         {
@@ -311,8 +293,6 @@ public class FPSController : MonoBehaviour
         transform.rotation = m_StartRotation;
         m_CharacterController.enabled = true;
 
-        //m_Yaw = m_StartRotation.eulerAngles.y;
-        //m_VerticalSpeed = 0.0f;
         m_IsDead = false;
     }
     void UpdateLifeBarEnemy()

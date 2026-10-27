@@ -23,7 +23,6 @@ public class DroneEnemy : MonoBehaviour
     public List<Transform> m_Waypoints;
     int m_CurrentPatrolId;
 
-    [Header("Drop")]
     public Item Medkit;
     public Item Shield;
     public Item Key;
@@ -51,7 +50,6 @@ public class DroneEnemy : MonoBehaviour
     public float m_AlertRotationSpeed = 120f;
     float m_AlertTimer;
 
-    [Header("Cone mesures")]
     public float ConeAngle = 160f;
     public float ConeRange = 10f;
 
@@ -159,7 +157,7 @@ public class DroneEnemy : MonoBehaviour
         foreach (Collider l_Collider in GetComponentsInChildren<Collider>())
             l_Collider.enabled = false;
 
-        DropItem();   // una sola vez, al entrar en DIE
+        DropItem();  
         StartCoroutine(FadeAndDestroy());
     }
 
@@ -247,7 +245,6 @@ public class DroneEnemy : MonoBehaviour
         m_HitTimer += Time.deltaTime;
         if (m_HitTimer < m_HitDuration) return;
 
-        // Si estaba en PATROL o IDLE -> ALERT. En cualquier otro caso, vuelve al estado anterior.
         if (m_PreviousState == TState.PATROL || m_PreviousState == TState.IDLE)
         {
             SetAlertState();
@@ -261,7 +258,7 @@ public class DroneEnemy : MonoBehaviour
 
     void UpdateDieState()
     {
-        // El fade y la destruccion los hace la corrutina FadeAndDestroy
+        //ocurre todo en el enumerator :D
     }
 
     int GetClosestPatrolWaypoint()
@@ -333,30 +330,8 @@ public class DroneEnemy : MonoBehaviour
 
     IEnumerator FadeAndDestroy()
     {
-        Renderer[] l_Renderers = GetComponentsInChildren<Renderer>();
-        float l_Time = 0.0f;
-
-        while (l_Time < m_DieFadeTime)
-        {
-            l_Time += Time.deltaTime;
-            float l_Alpha = 1.0f - Mathf.Clamp01(l_Time / m_DieFadeTime);
-
-            foreach (Renderer l_Renderer in l_Renderers)
-            {
-                foreach (Material l_Material in l_Renderer.materials)
-                {
-                    string l_Property = l_Material.HasProperty("_BaseColor") ? "_BaseColor" : "_Color";
-                    if (!l_Material.HasProperty(l_Property)) continue;
-
-                    Color l_Color = l_Material.GetColor(l_Property);
-                    l_Color.a = l_Alpha;
-                    l_Material.SetColor(l_Property, l_Color);
-                }
-            }
-            yield return null;
-        }
-
         Destroy(gameObject);
+        yield return null;
     }
 
     public bool ConoVisual()
