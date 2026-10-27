@@ -6,16 +6,16 @@ public class ShootingRangeManager : MonoBehaviour
 {
     public ShootingTarget[] targets;
 
-    public float activeTime = 3f;
-    public float delayBetweenTargets = 0.5f;
-    bool inside=false;
-    public int maxScore = 50;
+    public float m_activeTime = 3f;
+    public float m_delayBetweenTargets = 0.5f;
+    bool m_inside=false;
+    public int m_maxScore = 50;
     FPSController m_Player;
-    Score score;
+    Score m_score;
 
     private void Awake()
     {
-        score = FindObjectOfType<Score>();
+        m_score = FindObjectOfType<Score>();
     }
     void Start()
     {
@@ -25,20 +25,20 @@ public class ShootingRangeManager : MonoBehaviour
 
     IEnumerator ShootingSequence()
     {
-        while (inside&& m_Player.m_Score<maxScore)
+        while (m_inside&& m_Player.m_Score<m_maxScore)
         {
             foreach (ShootingTarget target in targets)
             {
                 target.ActivateTarget();
 
-                yield return new WaitForSeconds(activeTime);
+                yield return new WaitForSeconds(m_activeTime);
 
                 if (target.isUp)
                 {
                     target.DeactivateTarget();
                 }
 
-                yield return new WaitForSeconds(delayBetweenTargets);
+                yield return new WaitForSeconds(m_delayBetweenTargets);
             }
         }
     }
@@ -46,8 +46,8 @@ public class ShootingRangeManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            inside = true;
-            score.ShowScoreUI();
+            m_inside = true;
+            m_score.ShowScoreUI();
             StartCoroutine(ShootingSequence());
         }
     }
@@ -55,11 +55,11 @@ public class ShootingRangeManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            inside = false;
-            score.HideScoreUI();
-            if (score.score < 50)
+            m_inside = false;
+            m_score.HideScoreUI();
+            if (m_score.m_score < 50)
             {
-                score.ResetScore();
+                m_score.ResetScore();
             }
             
             StopAllCoroutines();

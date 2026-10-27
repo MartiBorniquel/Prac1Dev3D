@@ -1806,9 +1806,9 @@ MonoBehaviour:
   - {fileID: 192501925}
   - {fileID: 1620998281}
   - {fileID: 268321012}
-  activeTime: 2
-  delayBetweenTargets: 0.5
-  maxScore: 50
+  m_activeTime: 3
+  m_delayBetweenTargets: 0.5
+  m_maxScore: 50
 --- !u!4 &422617685
 Transform:
   m_ObjectHideFlags: 0
@@ -6409,8 +6409,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30966b213c1987f41a1ec178702e0863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Score
-  score: 0
-  ScoreUI: {fileID: 1396315442}
+  m_score: 0
+  m_ScoreUI: {fileID: 1396315442}
   Restart: 112
 --- !u!114 &1396315445
 MonoBehaviour:
@@ -7308,7 +7308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthUI
   m_PlayerHealth: {fileID: 1650815595}
-  m_Player: {fileID: 0}
+  m_Player: {fileID: 1650815586}
   m_HealthText: {fileID: 1619232292}
   m_ShieldText: {fileID: 1025437728}
   m_AmmoText: {fileID: 123068639}
@@ -7717,9 +7717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71be8917d8bf72646964bfc8748002ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPooling
-  pooledObjects: []
-  objectToPool: {fileID: 7498969538753508773, guid: 0ac40661ba228c94f9a302c1429f8ddb, type: 3}
-  amountToPool: 25
+  m_pooledObjects: []
+  m_objectToPool: {fileID: 7498969538753508773, guid: 0ac40661ba228c94f9a302c1429f8ddb, type: 3}
+  m_amountToPool: 25
 --- !u!114 &1650815595
 MonoBehaviour:
   m_ObjectHideFlags: 0
